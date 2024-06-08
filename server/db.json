@@ -1,5 +1,6 @@
-{"items":[
-    [{
+{
+    "allergeni": "",
+    "antipasti":[{
         "nome": "Il Tataki di ventresca di tonno",
         "ingredienti": "rosso locale servito su insalatina amaricante, salsa di frutta di stagione e cipolla rossa in agro",
         "img": "assets/pasta.jpeg",  
@@ -81,7 +82,7 @@
             "quantita": 0,
            "allergeni":["cereali"]
         }],
-        [{
+        "primi":[{
             "nome": "La Carrettiera",
             "ingredienti": "con tartare di gambero** rosso locale, colatura di alici e muddica atturrata",
             "img": "assets/pasta.jpeg",  
@@ -130,7 +131,7 @@
        "allergeni":["latte","uova"]
     }
    ],
-    [{
+    "secondi":[{
         "nome": "Il Tonno",
         "ingredienti": "rosso panato al sesamo nero e bianco, servito con cipolla in agrodolce e salicornia ",
         "img": "assets/pasta.jpeg",         
@@ -183,7 +184,8 @@
         "prezzo": "€23",
         "quantita": 0,
         "allergeni":[]
-    }],[
+    }],
+    "pizzeria":[
         {
             "nome": "Margherita",
             "ingredienti": "pomodoro, mozzarella fiordilatte, basilico, olio extra vergine d'oliva biologico",
@@ -346,6 +348,7 @@
             "quantita": 0,
             "allergeni":["latte","cereali","pesce"]
         }
-    ]
-    
-    ]}
+    ],
+    "birre":[],
+    "bibite":[]
+    }

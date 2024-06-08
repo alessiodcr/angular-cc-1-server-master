@@ -18,7 +18,7 @@ app.use(cors(corsOptions));
 // Use express.json() middleware to parse JSON bodies of requests
 app.use(express.json());
 app.get("/pages", (req, res) =>{
-  fs.readFile("pages.json", "utf8", (err, data) => {
+  fs.readFile("db.json", "utf8", (err, data) => {
     if (err) {
       console.log(err);
       res.status(500).send("Internal Server Error");
@@ -26,7 +26,8 @@ app.get("/pages", (req, res) =>{
     }
 
     const jsonData = JSON.parse(data);
-    const pages = jsonData.pages
+    const pages = Object.keys(jsonData)
+    console.log(pages)
     res.status(200).json({
       pages: pages
     })
@@ -44,27 +45,8 @@ app.get("/:id", (req, res) => {
       return;
     }
     const jsonData = JSON.parse(data);
-    let array;
-    switch (req.params.id) {
-      case 'antipasti':
-        array = jsonData.items[0];
-        break;
-        case 'primi':
-          array = jsonData.items[1];
-          break;
-          case 'secondi':
-        array = jsonData.items[2];
-        break;
-        case 'pizzeria':
-        array = jsonData.items[3];
-        break;
-        case 'birre':
-        array = jsonData.items[4];
-        break;
-        case 'bibite':
-        array = jsonData.items[5];
-        break;
-    }
+    const array = jsonData[req.params.id] 
+    console.log(array)
     //console.log(array)
     //console.log("done")
     // in questo modo verra inviato un array in base alla pagina
@@ -91,6 +73,11 @@ app.get("/:id", (req, res) => {
       });
     
   } )
+
+  app.post("/:id", (req,res) =>{
+    console.log(req.body)
+    res.send('created')
+  })
 
 // POST route - Allows to add a new item
 // example: localhost:3000/clothes
