@@ -71,7 +71,6 @@
             "img": "assets/pasta.jpeg",  
             "prezzo": "€9",
             "quantita": 0,
-            "cereali": true,
             "allergeni":["latte", "cereali"]
         },
         {

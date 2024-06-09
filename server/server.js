@@ -27,7 +27,6 @@ app.get("/pages", (req, res) =>{
 
     const jsonData = JSON.parse(data);
     const pages = Object.keys(jsonData)
-    console.log(pages)
     res.status(200).json({
       pages: pages
     })
@@ -46,7 +45,6 @@ app.get("/:id", (req, res) => {
     }
     const jsonData = JSON.parse(data);
     const array = jsonData[req.params.id] 
-    console.log(array)
     //console.log(array)
     //console.log("done")
     // in questo modo verra inviato un array in base alla pagina
@@ -76,7 +74,6 @@ app.get("/:id", (req, res) => {
 
   app.post("/:id", (req,res) =>{
     console.log(req.body)
-    res.send('created')
   })
 
 // POST route - Allows to add a new item
