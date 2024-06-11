@@ -37,7 +37,7 @@ app.get("/pages", (req, res) =>{
 // il pacchetto json è diviso in 7 array uno per ogni portata ogni pagina ha 5 elementi inviati in base all id che rappresenta la pagina
 app.get("/:id", (req, res) => {
 
-  fs.readFile("db.json", "utf8", (err, data) => {
+  fs.readFile("n.json", "utf8", (err, data) => {
     if (err) {
       console.log(err);
       res.status(500).send("Internal Server Error");
@@ -45,6 +45,7 @@ app.get("/:id", (req, res) => {
     }
     const jsonData = JSON.parse(data);
     const array = jsonData[req.params.id] 
+    console.log('fatto')
     //console.log(array)
     //console.log("done")
     // in questo modo verra inviato un array in base alla pagina
@@ -74,6 +75,51 @@ app.get("/:id", (req, res) => {
 
   app.post("/:id", (req,res) =>{
     console.log(req.body)
+    fs.readFile("n.json", "utf8", (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+      const jsonData = JSON.parse(data)
+      console.log(req.params.id )
+      jsonData[req.params.id].push(req.body);
+
+      fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
+        if (err)
+          console.log(err);
+        else {
+          console.log("File written successfully\n");
+          res.status(200).send('cancellato')
+        }
+      });
+      
+    })
+    
+  })
+
+
+  app.delete('/:id', (req, res) =>{
+    fs.readFile("n.json", "utf8", (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+      const jsonData = JSON.parse(data)
+      jsonData[req.params.id].splice(jsonData[req.params.id].indexOf(req.body), 1);
+
+      fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
+        if (err)
+          console.log(err);
+        else {
+          console.log("File written successfully\n");
+          res.status(200).send(req.body)
+        }
+      });
+      
+    })
+    
   })
 
 // POST route - Allows to add a new item
