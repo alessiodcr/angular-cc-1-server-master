@@ -37,7 +37,7 @@ app.get("/pages", (req, res) =>{
 // il pacchetto json è diviso in 7 array uno per ogni portata ogni pagina ha 5 elementi inviati in base all id che rappresenta la pagina
 app.get("/:id", (req, res) => {
 
-  fs.readFile("n.json", "utf8", (err, data) => {
+  fs.readFile("db.json", "utf8", (err, data) => {
     if (err) {
       console.log(err);
       res.status(500).send("Internal Server Error");
@@ -75,7 +75,7 @@ app.get("/:id", (req, res) => {
 
   app.post("/:id", (req,res) =>{
     console.log(req.body)
-    fs.readFile("n.json", "utf8", (err, data) => {
+    fs.readFile("db.json", "utf8", (err, data) => {
       if (err) {
         console.log(err);
         res.status(500).send("Internal Server Error");
@@ -100,7 +100,7 @@ app.get("/:id", (req, res) => {
 
 
   app.delete('/:id', (req, res) =>{
-    fs.readFile("n.json", "utf8", (err, data) => {
+    fs.readFile("db.json", "utf8", (err, data) => {
       if (err) {
         console.log(err);
         res.status(500).send("Internal Server Error");
