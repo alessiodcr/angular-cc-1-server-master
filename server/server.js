@@ -17,6 +17,56 @@ app.use(cors(corsOptions));
 
 // Use express.json() middleware to parse JSON bodies of requests
 app.use(express.json());
+app.delete('/pages', (req, res) =>{
+  fs.readFile("db.json", "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    let jsonData = JSON.parse(data)
+    jsonData = Object.keys(jsonData).filter(objKey =>
+      objKey !== req.body.name).reduce((newObj, key) =>
+      {
+          newObj[key] = jsonData[key];
+          return newObj;
+      }, {}
+  );
+
+    fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
+      if (err)
+        console.log(err);
+      else {
+        console.log("File written successfully\n");
+        res.status(200).send(req.body)
+      }
+    });
+    
+  })
+  
+})
+app.post('/pages', (req,res) =>{
+  console.log(req.body)
+    fs.readFile("db.json", "utf8", (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+      const jsonData = JSON.parse(data)
+      jsonData[req.body.name] = []
+
+      fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
+        if (err)
+          console.log(err);
+        else {
+          console.log("File written successfully\n");
+          res.status(200).send('cancellato')
+        }
+      });
+      
+    })
+})
 app.get("/pages", (req, res) =>{
   fs.readFile("db.json", "utf8", (err, data) => {
     if (err) {
@@ -106,9 +156,8 @@ app.get("/:id", (req, res) => {
         res.status(500).send("Internal Server Error");
         return;
       }
-      const jsonData = JSON.parse(data)
-      jsonData[req.params.id].splice(jsonData[req.params.id].indexOf(req.body), 1);
-
+      let jsonData = JSON.parse(data)
+      jsonData[req.params.id] = jsonData[req.params.id].filter(product => product.nome != req.body.nome)
       fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
         if (err)
           console.log(err);
