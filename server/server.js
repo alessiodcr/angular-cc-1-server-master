@@ -1,10 +1,20 @@
 const express = require("express");
 const fs = require("fs");
 const cors = require("cors");
-
 const app = express();
 const port = 3000;
-
+const replaceProduct = (array, toReplace, product) =>{
+  let newArray = []
+  array.forEach(x =>{
+      if(x.nome == toReplace.nome ){
+          x = product
+          newArray.push(x)
+      }else{
+          newArray.push(x)
+      }
+  })
+  return newArray
+}
 // Cors configuration - Allows requests from localhost:4200
 const corsOptions = {
   origin: "http://localhost:4200",
@@ -170,7 +180,27 @@ app.get("/:id", (req, res) => {
     })
     
   })
-
+  app.put('/:id', (req,res)=>{
+    fs.readFile("db.json", "utf8", (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+      let jsonData = JSON.parse(data)
+      
+      jsonData[req.params.id] = replaceProduct(jsonData[req.params.id], req.body.prev, req.body.new)
+      fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
+        if (err)
+          console.log(err);
+        else {
+          console.log("File written successfully\n");
+          res.status(200).send('cancellato')
+        }
+      });
+      
+    })
+  })
 // POST route - Allows to add a new item
 // example: localhost:3000/clothes
 /*
