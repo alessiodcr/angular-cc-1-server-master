@@ -25,8 +25,86 @@ const corsOptions = {
 // Use cors middleware
 app.use(cors(corsOptions));
 
+
+
+
 // Use express.json() middleware to parse JSON bodies of requests
 app.use(express.json());
+
+
+
+
+
+app.get('/options', (req, res) =>{
+  fs.readFile("options.json", "utf8", (err, data) =>{
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    let jsonData =JSON.parse(data) 
+    let options = jsonData.options
+    console.log(options)
+    res.status(200).json(options)
+  })
+})
+
+
+
+
+
+app.post('/options', (req, res)=>{
+  fs.readFile("options.json", "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    let jsonData = JSON.parse(data)
+    jsonData["options"] = req.body
+
+    fs.writeFile("options.json", JSON.stringify(jsonData), (err) => {
+      if (err)
+        console.log(err);
+      else {
+        console.log("File written successfully\n");
+        res.status(200).send(req.body)
+      }
+    });
+    
+  })
+})
+
+
+
+
+
+app.post('/login', (req, res) =>{
+  const income = req.body
+  fs.readFile("users.json", "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    let jsonData = JSON.parse(data)
+    let email = jsonData.super.email
+    let password = jsonData.super.password
+    let newEmail = income.email
+    let newPassword  = income.password
+    let token = new Date();
+    if(email == newEmail && password == newPassword){
+      res.status(200).json({
+        email: email,
+        passrord: password
+      })
+    }
+  })
+})
+
+
+
+
 app.delete('/pages', (req, res) =>{
   fs.readFile("db.json", "utf8", (err, data) => {
     if (err) {
@@ -55,6 +133,11 @@ app.delete('/pages', (req, res) =>{
   })
   
 })
+
+
+
+
+
 app.post('/pages', (req,res) =>{
   console.log(req.body)
     fs.readFile("db.json", "utf8", (err, data) => {
@@ -77,6 +160,12 @@ app.post('/pages', (req,res) =>{
       
     })
 })
+
+
+
+
+
+
 app.get("/pages", (req, res) =>{
   fs.readFile("db.json", "utf8", (err, data) => {
     if (err) {
@@ -93,6 +182,11 @@ app.get("/pages", (req, res) =>{
     });
   
 } )
+
+
+
+
+
 // GET route - Allows to get all the items
 // il pacchetto json è diviso in 7 array uno per ogni portata ogni pagina ha 5 elementi inviati in base all id che rappresenta la pagina
 app.get("/:id", (req, res) => {
@@ -115,6 +209,11 @@ app.get("/:id", (req, res) => {
     });
   });
 
+
+
+
+
+
   app.get("/coperto", (req, res) =>{
     fs.readFile("coperto.json", "utf8", (err, data) => {
       if (err) {
@@ -132,6 +231,10 @@ app.get("/:id", (req, res) => {
       });
     
   } )
+
+
+
+
 
   app.post("/:id", (req,res) =>{
     console.log(req.body)
@@ -159,6 +262,8 @@ app.get("/:id", (req, res) => {
   })
 
 
+
+
   app.delete('/:id', (req, res) =>{
     fs.readFile("db.json", "utf8", (err, data) => {
       if (err) {
@@ -180,6 +285,11 @@ app.get("/:id", (req, res) => {
     })
     
   })
+
+
+
+
+
   app.put('/:id', (req,res)=>{
     fs.readFile("db.json", "utf8", (err, data) => {
       if (err) {
@@ -201,6 +311,12 @@ app.get("/:id", (req, res) => {
       
     })
   })
+
+
+
+
+
+  
 // POST route - Allows to add a new item
 // example: localhost:3000/clothes
 /*

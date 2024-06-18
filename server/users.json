@@ -1,0 +1,8 @@
+{
+    "super": {
+        "email": "ciao",
+        "password": "ciao"
+    },
+    "admin":[],
+    "pending":[]
+}
