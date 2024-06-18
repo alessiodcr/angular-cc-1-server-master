@@ -33,6 +33,153 @@ app.use(express.json());
 
 
 
+app.get('/pending', (req, res) =>{
+  fs.readFile("users.json", "utf8", (err, data) =>{
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    let jsonData =JSON.parse(data) 
+    let users = jsonData['pending']
+    res.status(200).json({
+      users: users
+    })
+  })
+})
+
+
+app.post('/pending', (req, res) =>{
+  fs.readFile("users.json", "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    let jsonData = JSON.parse(data)
+    let newProfile = {}
+    jsonData['pending'].forEach(account =>{
+      if(account.email == req.body.email && account.password == req.body.password){
+        newProfile = account 
+      }
+    })
+    jsonData['pending'] = jsonData['pending'].filter(user => JSON.stringify(user) != JSON.stringify(req.body) )
+    jsonData['admin'].push(newProfile)
+
+
+    fs.writeFile("users.json", JSON.stringify(jsonData), (err) => {
+      if (err)
+        console.log(err);
+      else {
+        console.log("File written successfully\n");
+        res.status(200).send(req.body)
+      }
+    });
+    
+  })
+})
+
+
+
+
+
+
+app.delete('/pending', (req, res) =>{
+  fs.readFile("users.json", "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    let jsonData = JSON.parse(data)
+    jsonData['pending'] = jsonData['pending'].filter(user => JSON.stringify(user) != JSON.stringify(req.body.account) )
+    fs.writeFile("users.json", JSON.stringify(jsonData), (err) => {
+      if (err)
+        console.log(err);
+      else {
+        console.log("File written successfully\n");
+        res.status(200).send(req.body)
+      }
+    });
+    
+  })
+})
+
+
+
+app.get('/users', (req, res) =>{
+  fs.readFile("users.json", "utf8", (err, data) =>{
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    let jsonData =JSON.parse(data) 
+    let users = jsonData['admin']
+    res.status(200).json({
+      users: users
+    })
+  })
+})
+
+
+
+app.delete('/users', (req, res) =>{
+  fs.readFile("users.json", "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    let jsonData = JSON.parse(data)
+    jsonData['admin'] = jsonData['admin'].filter(user => JSON.stringify(user) != JSON.stringify(req.body.account) )
+    fs.writeFile("users.json", JSON.stringify(jsonData), (err) => {
+      if (err)
+        console.log(err);
+      else {
+        console.log("File written successfully\n");
+        res.status(200).send(req.body)
+      }
+    });
+    
+  })
+})
+
+
+
+
+app.post('/register', (req, res)=>{
+  console.log(req.body)
+  fs.readFile("users.json", "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    let jsonData = JSON.parse(data) 
+    if(req.body.password === req.body.confirm){
+      const newUser = {
+        email: req.body.email,
+        password: req.body.password
+      }
+      jsonData["pending"].push(newUser)
+
+      fs.writeFile("users.json", JSON.stringify(jsonData), (err) => {
+        if (err)
+          console.log(err);
+        else {
+          console.log("File written successfully\n");
+          res.status(200).send(req.body)
+        }
+      });
+    }else{
+      res.status(500).send('le due password non corrispondono')
+    }
+
+    
+    
+  })
+})
 
 
 app.get('/options', (req, res) =>{
