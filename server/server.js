@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const multer = require('multer')
 const cors = require("cors");
 const app = express();
 const port = 3000;
@@ -15,6 +16,20 @@ const replaceProduct = (array, toReplace, product) =>{
   })
   return newArray
 }
+
+//static files
+app.use(express.static('public'))
+var storage = multer.diskStorage(
+  {
+      destination: './public/img/',
+      filename: function ( req, file, cb ) {
+          //req.body is empty...
+          //How could I get the new_file_name property sent from client here?
+          cb( null, file.originalname);
+      }
+  }
+);
+const publicUpload = multer({storage: storage,})
 // Cors configuration - Allows requests from localhost:4200
 const corsOptions = {
   origin: "http://localhost:4200",
@@ -79,6 +94,30 @@ app.post('/pending', (req, res) =>{
   })
 })
 
+
+
+
+
+
+
+
+app.post('/publicImgUpload', publicUpload.single('img'), (req, res) =>{
+  const uploadedFile = req.file
+  if(uploadedFile){
+    
+    const filePath = `./public/img/${uploadedFile.filename}`
+    fs.writeFile(filePath, uploadedFile.buffer, (err)=>{
+      if(err){
+        console.log('>:(')
+        res.status(500).send('>:(')
+      }else{
+        console.log('<:)', filePath, fileName)
+        res.send('<:)')
+      }
+    })
+  }
+  
+})
 
 
 
@@ -235,17 +274,29 @@ app.post('/login', (req, res) =>{
       return;
     }
     let jsonData = JSON.parse(data)
-    let email = jsonData.super.email
-    let password = jsonData.super.password
     let newEmail = income.email
     let newPassword  = income.password
     let token = new Date();
-    if(email == newEmail && password == newPassword){
-      res.status(200).json({
-        email: email,
-        passrord: password
-      })
-    }
+    jsonData['super'].forEach(account =>{
+      if (account.email == newEmail && account.password == newPassword) {
+        res.status(200).json({
+          class: account.class,
+          email: account.email,
+          passrord: account.password
+        })
+      }
+    })
+    jsonData['admin'].forEach(account =>{
+      if (account.email == newEmail && account.password == newPassword) {
+        res.status(200).json({
+          class: account.class,
+          email: account.email,
+          passrord: account.password
+        })
+      }
+    })
+
+    
   })
 })
 
@@ -308,9 +359,23 @@ app.post('/pages', (req,res) =>{
     })
 })
 
+app.get("/coperto", (req, res) =>{
+  fs.readFile("coperto.json", "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
 
-
-
+    const jsonData = JSON.parse(data);
+    const coperto = jsonData.coperto
+    console.log(coperto)
+    res.status(200).json({
+      coperto: coperto
+    })
+    });
+  
+} )
 
 
 app.get("/pages", (req, res) =>{
@@ -360,24 +425,7 @@ app.get("/:id", (req, res) => {
 
 
 
-
-  app.get("/coperto", (req, res) =>{
-    fs.readFile("coperto.json", "utf8", (err, data) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send("Internal Server Error");
-        return;
-      }
   
-      const jsonData = JSON.parse(data);
-      const coperto = jsonData.coperto
-      console.log(coperto)
-      res.status(200).json({
-        coperto: coperto
-      })
-      });
-    
-  } )
 
 
 
@@ -392,15 +440,14 @@ app.get("/:id", (req, res) => {
         return;
       }
       const jsonData = JSON.parse(data)
-      console.log(req.params.id )
       jsonData[req.params.id].push(req.body);
-
+      console.log(req.body)
       fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
         if (err)
           console.log(err);
         else {
           console.log("File written successfully\n");
-          res.status(200).send('cancellato')
+          res.status(200).json(req.body)
         }
       });
       
@@ -420,6 +467,14 @@ app.get("/:id", (req, res) => {
       }
       let jsonData = JSON.parse(data)
       jsonData[req.params.id] = jsonData[req.params.id].filter(product => product.nome != req.body.nome)
+      if(fs.existsSync(`./public/img/${req.body.img.slice(26)
+      }`)){
+        fs.unlink(`./public/img/${req.body.img.slice(26)}`, (err)=>{
+          if(err){
+            console.log(err)
+          }
+        })
+      }
       fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
         if (err)
           console.log(err);

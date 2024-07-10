@@ -1,5 +1,15 @@
 {
-  "super": { "email": "ciao", "password": "ciao" },
-  "admin": [],
-  "pending": []
+    "super": [{
+        "class": "super",
+        "email": "super",
+        "password": "super"
+    }],
+    "admin": [
+        {
+            "class": "admin",
+            "email": "admin",
+            "password": "admin"
+        }
+    ],
+    "pending": []
 }
