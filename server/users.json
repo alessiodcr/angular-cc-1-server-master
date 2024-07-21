@@ -1,15 +1,1 @@
-{
-    "super": [{
-        "class": "super",
-        "email": "super",
-        "password": "super"
-    }],
-    "admin": [
-        {
-            "class": "admin",
-            "email": "admin",
-            "password": "admin"
-        }
-    ],
-    "pending": []
-}
+{"super":[{"class":"super","email":"super","password":"super","status":"on"}],"admin":[{"status":"on","class":"admin","email":"admin","password":"admin"}],"pending":[]}
