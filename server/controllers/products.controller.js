@@ -1,3 +1,4 @@
+const { json } = require('express')
 const fs = require('fs')
 const replaceProduct = (array, toReplace, product) =>{
   let newArray = []
@@ -19,12 +20,26 @@ module.exports.getProducts = async (req,res) =>{
           return;
         }
         const jsonData = JSON.parse(data);
-        const array = jsonData[req.params.id] 
-        console.log('fatto')
+        const array = jsonData[req.params.id]
+        console.log('ciao')
         res.status(200).json({
-          items: array,
+          items: array
         });
         });
+}
+
+module.exports.getPortate = async ( req, res) =>{
+  fs.readFile("db.json", "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    const jsonData = JSON.parse(data);
+    console.log(jsonData)
+    console.log('ciao')
+    res.status(200).json(jsonData);
+    });
 }
 
 
@@ -62,9 +77,8 @@ module.exports.deleteProducts = async (req, res) =>{
     }
     let jsonData = JSON.parse(data)
     jsonData[req.params.id] = jsonData[req.params.id].filter(product => product.nome != req.body.nome)
-    if(fs.existsSync(`../public/img/${req.body.img.slice(26)
-    }`)){
-      fs.unlink(`../public/img/${req.body.img.slice(26)}`, (err)=>{
+    if(fs.existsSync(`./public/img/${req.body.img.slice(26)}`)){
+      fs.unlink(`./public/img/${req.body.img.slice(26)}`, (err)=>{
         if(err){
           console.log(err)
         }
@@ -93,6 +107,15 @@ module.exports.editProducts = async ( req, res) =>{
       let jsonData = JSON.parse(data)
       
       jsonData[req.params.id] = replaceProduct(jsonData[req.params.id], req.body.prev, req.body.new)
+      if(req.body.prev.img != req.body.new.img){
+        if(fs.existsSync(`./public/img/${req.body.prev.img.slice(26)}`)){
+          fs.unlink(`./public/img/${req.body.prev.img.slice(26)}`, (err)=>{
+            if(err){
+              console.log(err)
+            }
+          })
+        }
+      }
       fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
         if (err)
           console.log(err);

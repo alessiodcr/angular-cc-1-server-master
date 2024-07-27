@@ -32,10 +32,12 @@ router.post('/pages', pagesController.postPage)
 router.delete('/pages', pagesController.deletePage)
 router.get('/pages', pagesController.getPages)
 
+router.get('/portate', productController.getPortate)
 router.get("/:id", productController.getProducts);
 router.post('/:id', productController.postProducts)
 router.delete('/:id', productController.deleteProducts)
 router.put('/:id', productController.editProducts)
+
 
 
 
