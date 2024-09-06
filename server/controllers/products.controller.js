@@ -51,8 +51,10 @@ module.exports.postProducts = async (req, res) =>{
         res.status(500).send("Internal Server Error");
         return;
       }
-      console.log('ciao\n\n\nn\nn\n\n\n')
       const jsonData = JSON.parse(data)
+      if(!req.body.prezzo.includes(',')){
+        req.body.prezzo = req.body.prezzo + ',00'
+      }
       jsonData[req.params.id].push(req.body);
       fs.writeFile("db.json", JSON.stringify(jsonData), (err) => {
         if (err)

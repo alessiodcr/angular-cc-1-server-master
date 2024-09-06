@@ -1,1 +1,21 @@
-{"super":[{"class":"super","email":"super","password":"super","status":"on"}],"admin":[{"status":"on","class":"admin","email":"admin","password":"admin"}],"pending":[]}
+{
+  "super": [
+    {
+      "status": "on",
+      "class": "super",
+      "nome": "super",
+      "email": "super",
+      "password": "$2b$10$VOeDuclMm1j6zPL9PY2QJuGQVcGDaTzPLczZ5pYXgXpXf7pQFoMMK"
+    }
+  ],
+  "admin": [
+    {
+      "status": "on",
+      "class": "admin",
+      "nome": "admin",
+      "email": "admin",
+      "password": "admin"
+    }
+  ],
+  "pending": []
+}

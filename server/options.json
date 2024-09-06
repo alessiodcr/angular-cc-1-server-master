@@ -1,1 +1,15 @@
-{"options":{"primario":"#508078","secondario":"#ffffff","terziario":"#000000","immagine":true,"piccoli":16,"grandi":18,"grandi2":28,"font1":18,"font2":"Montserrat"}}
+{
+  "options": {
+    "primario": "#508078",
+    "secondario": "#ffffff",
+    "terziario": "#000000",
+    "immagine": true,
+    "coperto": true,
+    "piccoli": 16,
+    "grandi": 14,
+    "grandi2": 24,
+    "font1": "Merriweather",
+    "font2": "Merriweather",
+    "font3": "Merriweather"
+  }
+}
