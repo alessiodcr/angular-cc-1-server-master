@@ -44,7 +44,8 @@ module.exports.register = async (req,res) =>{
             class: 'admin',
             nome: req.body.nome,
             email: req.body.email,
-            password: password
+            password: password,
+            date: new Date()
           }
           jsonData["pending"].push(newUser)
     

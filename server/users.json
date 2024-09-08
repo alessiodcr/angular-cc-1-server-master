@@ -17,5 +17,22 @@
       "password": "admin"
     }
   ],
-  "pending": []
+  "pending": [
+    {
+      "status": "on",
+      "class": "admin",
+      "nome": "asd",
+      "email": "asd@gmail.com",
+      "password": "$2b$10$lkmdjR19NLKxA5ohYb7xm.zuJZ.jXjNTzcXzqR0g6s8NwGyLNoun2",
+      "date": "2024-09-07T00:31:44.437Z"
+    },
+    {
+      "status": "on",
+      "class": "admin",
+      "nome": "sdf",
+      "email": "sdf@gmail.com",
+      "password": "$2b$10$7vrsWaVi/rJBdDTePAZ8oeOFg4/5sKYyXgKvXfJ71BA1oTYTJpGKO",
+      "date": "2024-09-07T00:31:54.461Z"
+    }
+  ]
 }
