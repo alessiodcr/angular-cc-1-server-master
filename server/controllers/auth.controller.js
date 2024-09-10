@@ -34,10 +34,11 @@ module.exports.register = async (req,res) =>{
         })
         if(accountExists){
           console.log('yes')
-          res.send('credenziali gia in utilizzo').status(400)
+          res.send({message:'credenziali gia in utilizzo'}).status(400)
           return;
         }
         if(req.body.password === req.body.confirm){
+          const date = new Date()
           const password = await hashPassword(req.body.password)
           const newUser = {
             status: 'on',
@@ -45,7 +46,7 @@ module.exports.register = async (req,res) =>{
             nome: req.body.nome,
             email: req.body.email,
             password: password,
-            date: new Date()
+            date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
           }
           jsonData["pending"].push(newUser)
     
@@ -58,7 +59,7 @@ module.exports.register = async (req,res) =>{
             }
           });
         }else{
-          res.status(500).send('le due password non corrispondono')
+          res.status(400).send({message:'le due password non corrispondono'})
           return;
         }
         
